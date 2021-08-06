@@ -1,0 +1,8 @@
+public class DynamicOpenSFDCfilesHelper {
+    @auraEnabled
+    public static List<Attachment> getListOfDocuments(){
+       List<Attachment> attachmentList =  [SELECT Body,BodyLength,ContentType,Description,Id,Name,ParentId FROM Attachment];
+        return attachmentList;
+    }
+
+}
