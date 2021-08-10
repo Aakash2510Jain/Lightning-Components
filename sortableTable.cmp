@@ -1,0 +1,48 @@
+<aura:component controller="SortableTableHelper" >
+    <aura:handler value="{!this}" action="{!c.doinit}" name="init"/>
+    <aura:attribute name="objName" type="string"/>
+    <aura:attribute name="fieldList" type="List"/>
+    <aura:attribute name="recordList" type="List"/>
+    <aura:attribute name="arrowDirection" type="string" default="desc"/>
+    <aura:attribute name="selectedTabsoft" type="string" default="FirstName"/>
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+	
+    <div style="margin:2%" >
+        <aura:if isTrue="{! v.loaded }">
+            
+            <div class="spinner">
+                <lightning:spinner alternativeText="Loading" size="large" />
+            </div>
+        </aura:if>
+        
+        
+        <lightning:card footer="" title="Contact Details">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>                 
+                    <aura:iteration items="{!v.fieldList}" var="field" indexVar="indx">
+                        <th>
+                            <div title="{!field}"  onclick="{!c.handleClick }">
+                                {!field}
+                                <aura:if isTrue="{! and(v.arrowDirection == 'desc')}">&nbsp;  &#9660;</aura:if>
+                                <aura:if isTrue="{! and(v.arrowDirection == 'asc') }">&nbsp;  &#9650;</aura:if>    
+                            </div>
+                        </th>           
+                        
+                    </aura:iteration>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.recordList}" var="Rec" indexVar="indx">
+                        <tr class="slds-hint-parent">
+                            
+                            <aura:iteration items="{!v.fieldList}" var="field" indexVar="indx">
+                                <td>
+                                    <c:fieldComp record="{!Rec}" field="{!field}"/>
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </lightning:card>
+    </div>
+</aura:component>
