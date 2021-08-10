@@ -1,0 +1,37 @@
+public class SortableTableHelper {
+    @auraEnabled
+    public static  List<SObject> getSortedList(string objName, List<String> fieldList, string order, string sortByField){
+        system.debug('obj:::'+objName);
+        system.debug('fieldList:::'+fieldList);
+        List <SObject> allRecords = new List <SObject> ();
+        String query = 'SELECT ';
+        for(Integer i=0; i<fieldList.size(); i++){
+            query += fieldList[i] +',';
+        }
+        query = query.removeEnd(',');
+        query += ' FROM ' + objName ;
+        query += ' ORDER BY '+sortByField+' '+order+' '+'NULLS LAST';
+        System.debug('query:::' + query);
+        allRecords = Database.query(query);
+        system.debug('allRecords::'+allRecords);        
+        return allRecords;
+        
+    }
+    @auraEnabled
+    public static List<SObject> getRecords(String obj,List<String> fieldList){
+        system.debug('obj:::'+obj);
+        system.debug('fieldList:::'+fieldList);
+        List <SObject> allRecords = new List <SObject> ();
+        String query = 'SELECT ';
+        for(Integer i=0; i<fieldList.size(); i++){
+            query += fieldList[i] +',';
+        }
+        query = query.removeEnd(',');
+        query += ' FROM ' + obj ;
+        System.debug('query:::' + query);
+        allRecords = Database.query(query);
+        system.debug('allRecords::'+allRecords);        
+        return allRecords;
+    } 
+    
+}
