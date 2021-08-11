@@ -1,0 +1,40 @@
+<aura:component controller="CustomDataTableWithPaginationHelper" >
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:attribute name="sObjectList" type="List" />
+    <aura:attribute name="fieldList" type="String[]" />
+    <aura:attribute name="objectName" type="String" />
+    <aura:attribute name="listViewValues" type="List" />
+    <aura:attribute name="recordList" type="List" />
+	
+    <div style="width:10%;float:right;">
+        <lightning:select name="select1" label="Records/Page :"  onchange="{!c.listViewChanged}"   required="true">
+            <option value="">choose one...</option>
+            <aura:iteration items="{!v.listViewValues}" var="field" indexVar="indx">
+                <option value="{!field}">{!field}</option>
+            </aura:iteration>
+        </lightning:select>
+    </div>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <aura:iteration items="{!v.fieldList}" var="field" indexVar="indx">
+                    <th>
+                        {!field}
+                    </th>
+                </aura:iteration>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.recordList}" var="accRec" indexVar="indx">
+                <tr class="slds-hint-parent">
+                  
+                    <aura:iteration items="{!v.fieldList}" var="field" indexVar="indx">
+                        <td>
+                            <c:fieldComp record="{!accRec}" field="{!field}"/>
+                        </td>
+                    </aura:iteration>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+</aura:component>
