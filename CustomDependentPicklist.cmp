@@ -1,0 +1,58 @@
+<aura:component controller="CustomDependentPicklistHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:attribute name="mapValues" type="object" /> 
+    <aura:attribute name="mapOfFieldValues" type="object" /> 
+    <aura:attribute name="selectedValueofObject" type="String" />
+    <aura:attribute name="selectedValueofField" type="String" />
+    <aura:attribute name="fieldSection" type="boolean" default="false" />
+    <aura:attribute name="valueSection" type="boolean" default="false"/>
+    <aura:attribute name="ListOfFields" type="List" />
+    <aura:attribute name="ListOfFieldsValues" type="List" />
+    <aura:attribute name="selectedValueFromPicklistValues" type="String" />
+    <aura:attribute name="showSelectedValue" type="boolean" default="false"/>
+    
+    <div class="slds-m-around_xx-large">
+        <lightning:card footer="" title="Custom Dependent Picklist with 3 levels">
+            <div class="slds-m-around_xx-large">
+                <div class="slds-box slds-theme_default">
+                    <lightning:select name="objectName" label="Select an Object : " value="{!v.selectedValueofObject}" onchange="{!c.onObjectValueSelection}">
+                        <option value="">choose one...</option>
+                        <aura:iteration items="{!v.mapValues}" var="mapKey">
+                            <option text="{!mapKey.key}" value="{!mapKey.key}" />
+                        </aura:iteration>
+                    </lightning:select>               
+                </div>
+                
+                <aura:if isTrue="{!v.fieldSection}">
+                    <div class="slds-box slds-theme_default" style="margin-top:2%; margin-bottom:2%;" >
+                        <lightning:select name="FieldName" label="Select a Field : " value="{!v.selectedValueofField}" onchange="{!c.onFieldSelection}">
+                            <option value="">choose one...</option>
+                            <aura:iteration items="{!v.ListOfFields}" var="fields" indexVar="index">
+                                <option text="{!fields}" value="{!fields}" />
+                            </aura:iteration>
+                        </lightning:select>               
+                    </div>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.valueSection}">
+                    <div class="slds-box slds-theme_default">
+                        <lightning:select name="FieldName" label="Values Of PicklistField Selected : "  onchange="{!c.showselectedvalue}">
+                            <option value="">select to See Values</option>
+                            <aura:iteration items="{!v.ListOfFieldsValues}" var="FieldValues">
+                                <option text="{!FieldValues}" value="{!FieldValues}" />
+                            </aura:iteration>
+                        </lightning:select>               
+                    </div>
+                    
+                </aura:if> 
+                <aura:if isTrue="{!v.showSelectedValue}">
+                    <div style="margin-top:2%" class="slds-box slds-theme_default">
+                        <b>
+                            {!v.selectedValueFromPicklistValues}
+                        </b>
+                    </div>
+                </aura:if>
+            </div>
+        </lightning:card>
+    </div>
+</aura:component>

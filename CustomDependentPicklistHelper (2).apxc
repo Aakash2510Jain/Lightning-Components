@@ -1,0 +1,46 @@
+public class CustomDependentPicklistHelper {
+    @auraEnabled
+    public static Map<String,Map<String,List<String>>> getObjects(){
+        //get objects API name
+        List<sObjects__c> sObjectList = [SELECT API_Name__c,Label__c FROM sObjects__c];
+        system.debug('');
+        Map<String,Map<String,List<String>>> pickListValuesByFieldNameByObjName = new Map<String,Map<String,List<String>>>();
+        Map<String , Schema.SObjectType> schemaGlobalDescription = Schema.getGlobalDescribe();
+        Map<String , Schema.SObjectField> mapFieldList = new Map<String , Schema.SObjectField>();
+        
+        for(sObjects__c objName : sObjectList){ // objectName
+            system.debug('data::'+objName.API_Name__c);
+            
+            SObjectType sObjType = ((SObject) Type.forName(objName.API_Name__c).newInstance()).getSObjectType();
+            Map <String, Schema.SObjectField> fieldMap = sObjType.getDescribe().fields.getMap();
+            
+            Map<String,List<String>> picklistValuesByFieldName = new Map<String,List<String>>();
+            
+            for(string fieldName : fieldMap.keySet()){ //FieldName
+
+                String fieldLabel = fieldMap.get(fieldName).getDescribe().getLabel();
+                Schema.DisplayType fielddataType = fieldMap.get(fieldName).getDescribe().getType();
+                
+                if(fielddataType == Schema.DisplayType.Picklist){ //DataType of field
+                    
+                    List<Schema.PicklistEntry> pick_list_values = sObjType.getDescribe().fields.getMap().get(fieldName).getDescribe().getPickListValues(); // picklist values of field
+                    List<String> picklistValues = new List<String>();
+                    
+                    for (Schema.PicklistEntry aPickListValue : pick_list_values) {                   
+                        picklistValues.add(aPickListValue.getValue()); 
+                    }
+                    
+                    picklistValuesByFieldName.put(fieldName,picklistValues);                 
+                }               
+            }
+            pickListValuesByFieldNameByObjName.put(objName.API_Name__c,picklistValuesByFieldName);
+            system.debug('pickListValuesByFieldNameByObjName::'+pickListValuesByFieldNameByObjName);
+        }   
+        system.debug('pickListValuesByFieldNameByObjName::'+pickListValuesByFieldNameByObjName);
+        return pickListValuesByFieldNameByObjName;
+  
+    }
+    
+   
+    
+}
