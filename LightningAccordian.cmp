@@ -1,0 +1,22 @@
+<aura:component controller="LightningAccordianHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:attribute name="activeSections" type="List" default="[]" />
+    <aura:attribute name="objectName" type="String"  />
+    <aura:attribute name="fieldList" type="List" />
+    <aura:attribute name="recordList" type="List" />
+    
+    
+    <div class="slds-m-around_xx-large">
+        <lightning:accordion allowMultipleSectionsOpen="true">
+            <lightning:card footer="" title="Lightning Accordian">
+                <aura:iteration items="{!v.recordList}" var="record">
+                    <lightning:accordionSection name="{!record.Name}" label="{!record.Name}">
+                        <aura:iteration items="{!v.fieldList}" var="field">
+                            <p><b>{!field} : </b><c:fieldComp record="{!record}" field="{!field}"/></p>
+                        </aura:iteration>
+                    </lightning:accordionSection>
+                </aura:iteration>
+            </lightning:card>
+        </lightning:accordion>
+    </div>
+</aura:component>
