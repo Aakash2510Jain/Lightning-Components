@@ -1,0 +1,18 @@
+public class MultiSelectLookupHelper {
+	@auraEnabled
+     Public static List<sObject> getRecords(String objName, List<String> fieldList){
+        List<sObject> recordsList = new List<sObject>();
+        String query = 'Select ';
+        for(String field : fieldList){
+            query += field+',';
+        }
+        system.debug('query::'+query);
+        query = query.removeEnd(',');
+        system.debug('query::'+query);
+        query += ' From '+objName+' Limit 10';
+        system.debug('query:'+query);
+        recordsList = database.query(query);
+        system.debug('recordsList::'+recordsList);
+        return recordsList;
+    }
+}
