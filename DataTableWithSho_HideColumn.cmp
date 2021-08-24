@@ -1,0 +1,43 @@
+<aura:component controller="DataTableWithShow_HideColumnHelper">
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="objectName" type="String" />
+    <aura:attribute name="fieldList" type="List" />
+    <aura:attribute name="recordList" type="List" />
+    <aura:attribute name="modalForSelectingFields" type="boolean" default="false" />
+    <aura:attribute name="selectedFieldsList" type="List" />
+    <aura:attribute name="showChildComponent" type="boolean" default="false" />
+    
+    <div style="margin:2%">
+        <lightning:card footer="" title="Data Table with show/Hide column, Click the icon below and Select the fields for which you want to render the records">
+            
+            <lightning:buttonIconStateful style="margin-left:2%" iconName="utility:ad_set"  onclick="{! c.handleIconClick }" />
+            <aura:if isTrue="{!v.modalForSelectingFields}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeModel }" alternativeText="close" variant="bare-inverse" class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Manage Table Columns</h2>
+                        </header>
+                        <!--Modal/Popup Box Body Starts here-->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <aura:iteration items="{!v.fieldList}" var="item">
+                                <p>
+                                    <ui:inputCheckbox aura:id="headerCheckbox" name="{!item.Key}" change="{!c.handleCheckBox}" value="{!item.value}" />&nbsp;&nbsp;&nbsp;{!item.Key}
+                                </p>
+                            </aura:iteration>
+                        </div>
+                        <!--Modal/Popup Box Footer Starts here-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button variant="neutral" label="Cancel" title="Cancel" onclick="{! c.closeModel }"/>
+                            <lightning:button variant="brand" label="OK" title="OK" onclick="{!c.submitDetails}"/>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+            <aura:if isTrue="{!v.showChildComponent}">
+                <c:DataTableWithShow_HideColumnChildcmp  fieldsToShow="{!v.selectedFieldsList}" recordList ="{!v.recordList}"/>
+            </aura:if>
+        </lightning:card>
+    </div>
+</aura:component>
