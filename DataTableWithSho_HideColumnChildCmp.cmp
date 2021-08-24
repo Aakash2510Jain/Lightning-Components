@@ -1,0 +1,61 @@
+<aura:component >
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}" />
+    <aura:attribute name="fieldsToShow" type="List" />
+    <aura:attribute name="recordList" type="List" />
+    <aura:attribute name="recordsPerPage" type="integer" />
+    <aura:attribute name="totalRecords" type="integer" />
+    <aura:attribute name="start" type="integer" />
+    <aura:attribute name="end" type="integer" />
+    <aura:attribute name="modifiedList" type="List" />
+    <aura:attribute name="paginationApplied" type="boolean" default="false" />
+    <aura:attribute name="disableNext" type="boolean" default="false" />
+    <aura:attribute name="disablePrevious" type="boolean" default="false" />
+    
+    <div style="margin:2%">
+        <lightning:card footer="" title="">
+            <div style="width:10%;float:left;">
+                <lightning:select name="" label=""  onchange="{!c.pageRecordsChanged}"  value="{!v.recordsPerPage}" required="false">
+                    <option value="">Records/Page :</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    
+                </lightning:select>
+            </div>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th>
+                            S.no
+                        </th>
+                        <aura:iteration items="{!v.fieldsToShow}" var="field">
+                            <th>
+                                {!field}
+                            </th>
+                        </aura:iteration>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.modifiedList}" var="rec"  indexVar="indx">
+                        <tr>
+                            <td>
+                                {!indx +1}
+                            </td>
+                            <aura:iteration items="{!v.fieldsToShow}" var="field" >
+                                <td>
+                                    <c:fieldComp record="{!rec}" field="{!field}"/>
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+            <aura:if isTrue="{!v.paginationApplied}">
+                <div style="margin-left: 800px;margin-top: 2%;">
+                    <lightning:button variant="brand" label="Next" title="Next" onclick="{!c.next}" disabled="{!v.disableNext}"  class="slds-m-left_x-small"></lightning:button>
+                    <lightning:button variant="brand" label="Previous" title="Previous" onclick="{!c.previous}" disabled="{!v.disablePrevious}" class="slds-m-left_x-small"></lightning:button>
+                </div>
+            </aura:if>
+        </lightning:card>
+    </div>
+</aura:component>
