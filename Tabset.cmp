@@ -1,0 +1,22 @@
+<aura:component >
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:attribute name="tabsetLabels" type="list"/>
+    <aura:attribute name="tabId" type="String" default="1"/>
+    <aura:attribute name="next" type="boolean" default="false"/>
+    <aura:attribute name="back" type="boolean" default="false"/>
+    
+    <div style="margin:2%">
+        <lightning:card footer="" title="Tabset">
+            <lightning:tabset onselect="{!c.tabSelected}" selectedTabId ="{!v.tabId}">
+                <aura:iteration items="{!v.tabsetLabels}" indexVar="indx" var="tabLabel">
+                    <lightning:tab label="{!tabLabel.value}" id="{!tabLabel.key}" >
+                        This is the content for {!tabLabel.value} - {!tabLabel.key}
+                    </lightning:tab>
+                </aura:iteration>
+            </lightning:tabset>
+            <button class="slds-button slds-button_brand" style="float:right" disabled="{!v.next}" onclick="{! c.next }">Next</button>
+            
+            <button class="slds-button slds-button_brand" disabled="{!v.back }" onclick="{! c.back }">Back</button>
+        </lightning:card>
+    </div>
+</aura:component>
