@@ -1,0 +1,23 @@
+<aura:component >
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}"/>
+    <aura:attribute name="stages" type="List"/>
+    <aura:attribute name="currentStage" type="string" />
+    <aura:attribute name="next" type="boolean" default="false"/>
+    <aura:attribute name="previous" type="boolean" default="false"/>
+    
+    <div style="margin:2%">
+        <lightning:card footer="" title="Progress Bar">
+            <div class="slds-align_absolute-center" style="height:5rem">
+                <lightning:progressIndicator currentStep="{!v.currentStage}" type="base" hasError="false" variant="base">
+                    <aura:iteration items="{!v.stages}" var="Stage" indexVar="indx">
+                        <lightning:progressStep label="{!indx+1}" value="{!Stage}"/>
+                    </aura:iteration>
+                </lightning:progressIndicator>
+            </div>
+            <div class="slds-align_absolute-center" style="height:5rem">
+                <button class="slds-button slds-button_brand" onclick="{!c.next}" disabled="{!v.next}">Next</button>
+                <button class="slds-button slds-button_brand"  onclick="{!c.previous}" disabled="{!v.previous}">Previous</button>
+            </div>
+        </lightning:card>
+    </div>
+</aura:component>
