@@ -1,0 +1,37 @@
+public class UploadLargeFileHelper {
+    @auraEnabled
+    public static Id saveChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId){
+        if (fileId == '') {
+            fileId = saveTheFile(parentId, fileName, base64Data, contentType);
+        } else {
+            appendToFile(fileId, base64Data);
+        }
+        
+        return Id.valueOf(fileId);
+    }
+    public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType) {
+        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
+        
+        Attachment oAttachment = new Attachment();
+        oAttachment.parentId = parentId;
+        oAttachment.Body = EncodingUtil.base64Decode(base64Data);
+        oAttachment.Name = fileName;
+        oAttachment.ContentType = contentType;
+        
+        insert oAttachment;
+        
+        return oAttachment.Id;
+    }
+    
+    private static void appendToFile(Id fileId, String base64Data) {
+        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
+        
+        Attachment att = [SELECT Id, Body From Attachment WHERE Id =: fileId];
+        
+        String existingBody = EncodingUtil.base64Encode(att.Body);
+        
+        att.Body = EncodingUtil.base64Decode(existingBody + base64Data);
+        
+        update att;
+    }
+}
