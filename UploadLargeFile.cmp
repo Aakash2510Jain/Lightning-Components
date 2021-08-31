@@ -1,0 +1,22 @@
+<aura:component controller="UploadLargeFileHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="parentId" type="String" default="0015g00000E3aCo"/>
+    <aura:attribute name="fileId" type="String" default=""/>
+    <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="fileName" type="String" default="No File Selected"/>
+    
+    <div style="margin:2%">
+        <lightning:card footer="" title="Upload Files">
+            <div style="margin:2%">
+                <lightning:input aura:id="fileId" onchange="{!c.upload}" type="file" name="file" label="Upload Attachment" multiple="false"/>
+                {!v.fileName}
+            </div>
+            <aura:if isTrue = "{!v.showLoadingSpinner}">
+                <div class="exampleHolder">
+                    <lightning:spinner alternativeText="Loading" size="large" />
+                </div> 
+            </aura:if>  
+            <button class="slds-button slds-button_brand" style="margin-left:50%" onclick="{!c.saveFile}">Save</button>
+        </lightning:card>
+    </div>
+</aura:component>
