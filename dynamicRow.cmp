@@ -1,0 +1,37 @@
+<aura:component controller="addDeleteController" Implements="flexipage:availableForRecordHome,force:hasRecordId">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="DeleteRowEvt" event="c:DeleteRowEvt" action="{!c.removeDeletedRow}"/>
+    <aura:handler name="AddNewRowEvt" event="c:AddNewRowEvt" action="{!c.addNewRow}"/>
+    <aura:attribute name="contactList" type="Contact[]"/> 
+    
+    <div class="slds-page-header">
+        <h1 class="slds-page-header__title">Create Multiple Contacts, With Add/Delete Rows Dynamically</h1>
+    </div>
+    
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+            <tr class="slds-text-title_caps">
+                <th scope="col">
+                    <div class="slds-truncate">S.No</div>
+                </th >
+                <th scope="col">
+                    <div class="slds-truncate" title="First Name">First Name</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Last Name">Last Name</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Phone">Phone</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.contactList}" var="item" indexVar="index">
+                <c:dynamicRowItem contactRecord="{!item}" rowIndex="{!index}" />
+            </aura:iteration>
+        </tbody>
+    </table>
+    <br/>
+
+    <button class="slds-button slds-button_brand" style="margin-left:50%" onclick="{!c.Save}">Save</button>
+</aura:component>
