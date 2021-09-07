@@ -1,0 +1,8 @@
+public with sharing class addDeleteController {
+    @AuraEnabled
+    public static void saveContacts(List<Contact> ListContact){
+        if(!ListContact.isEmpty()){
+            Insert ListContact;
+        }
+    }
+}
