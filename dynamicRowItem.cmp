@@ -1,0 +1,38 @@
+<aura:component >
+    <aura:attribute name="objectName" type="object" />
+    <aura:attribute name="fieldList" type="List" />
+    <aura:attribute name="contactRecord" type="Contact" />
+    <aura:attribute name="rowIndex" type="string" />
+    
+    <aura:registerEvent name="DeleteRowEvt" type="c:DeleteRowEvt" />
+    <aura:registerEvent name="AddNewRowEvt" type="c:AddNewRowEvt" />
+    
+    <tr>
+        <td>
+            {!v.rowIndex + 1}
+        </td>
+        <td>
+            <lightning:input name="input1" value="{!v.contactRecord.FirstName}" />
+        </td>
+        <td>
+            <lightning:input name="input1" required="true" value="{!v.contactRecord.LastName}" />
+        </td>
+        <td>
+            <lightning:input type="number" value="{!v.contactRecord.Phone}" />
+        </td>
+        <td>
+            <aura:if isTrue="{!v.rowIndex == 0}">
+                <a onclick="{!c.AddNewRow}">
+                    <lightning:icon iconName="utility:add" class="slds-icon slds-icon_small" size="small" alternativeText="add"/>
+                    <span class="slds-assistive-text">Add Icon</span>
+                </a>    
+                <aura:set attribute="else">
+                    <a onclick="{!c.removeRow}">
+                        <lightning:icon variant="error" iconName="utility:delete" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                        <span class="slds-assistive-text">Delete Icon</span>
+                    </a>
+                </aura:set> 
+            </aura:if>
+        </td>
+    </tr>
+</aura:component>
